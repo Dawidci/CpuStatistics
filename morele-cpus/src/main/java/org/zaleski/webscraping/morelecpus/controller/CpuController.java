@@ -26,6 +26,11 @@ public class CpuController {
         return cpuService.getCpuById(id);
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Cpu> getCpuByName(@PathVariable(value = "name") String name) throws ResourceNotFoundException {
+        return cpuService.getCpuByName(name);
+    }
+
     @GetMapping("/company/{name}")
     public List<Cpu> getCpusByCompanyName(@PathVariable(value = "name") String name) {
         return cpuService.getCpusByCompanyName(name);

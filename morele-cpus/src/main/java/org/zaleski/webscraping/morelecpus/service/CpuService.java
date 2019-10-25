@@ -24,6 +24,11 @@ public class CpuService {
         return ResponseEntity.ok().body(cpu);
     }
 
+    public ResponseEntity<Cpu> getCpuByName(String name) throws ResourceNotFoundException {
+        Cpu cpu = cpuRepository.findByName(name);
+        return ResponseEntity.ok().body(cpu);
+    }
+
     public List<Cpu> getCpusByCompanyName(String name) {
         return cpuRepository.findByCompanyName(name);
     }

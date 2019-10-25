@@ -10,4 +10,5 @@ import java.util.List;
 public interface CpuRepository extends JpaRepository<Cpu, Long> {
     List<Cpu> findByCompanyName(String companyName);
     List<Cpu> findByCoreCount(int coreCount);
+    Cpu findByName(String name);
 }

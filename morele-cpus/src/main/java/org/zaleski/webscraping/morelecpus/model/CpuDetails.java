@@ -2,11 +2,13 @@ package org.zaleski.webscraping.morelecpus.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity @Table(name = "cpu_details")
 public class CpuDetails {
