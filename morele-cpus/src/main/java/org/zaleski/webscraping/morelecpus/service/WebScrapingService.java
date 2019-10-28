@@ -1,10 +1,5 @@
 package org.zaleski.webscraping.morelecpus.service;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Projections;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
@@ -15,22 +10,10 @@ import org.zaleski.webscraping.morelecpus.exception.ResourceNotFoundException;
 import org.zaleski.webscraping.morelecpus.model.Cpu;
 import org.zaleski.webscraping.morelecpus.model.CpuDetails;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.Root;
-import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,8 +24,7 @@ public class WebScrapingService {
     @Autowired private CpuDetailsService cpuDetailsService;
 
     public void webScraping() throws IOException {
-        List<CpuDetails> details = cpuDetailsService.getAllCpuDetails();
-        LocalDate maxDate = details.stream().map(CpuDetails::getDate).max(LocalDate::compareTo).get();
+        LocalDate maxDate = this.cpuDetailsService.getMaxDate();
         if(!maxDate.equals(LocalDate.now())) getAllCPUdata();
     }
 

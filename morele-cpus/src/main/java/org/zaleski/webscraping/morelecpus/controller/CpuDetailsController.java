@@ -36,4 +36,9 @@ public class CpuDetailsController {
     public List<CpuDetails> getCpuDetailsByDate(@PathVariable(value = "date") LocalDate date) {
         return cpuDetailsService.getCpuDetailsByDate(date);
     }
+
+    @GetMapping("date/max")
+    public LocalDate getMaxDate() {
+        return cpuDetailsService.getMaxDate();
+    }
 }

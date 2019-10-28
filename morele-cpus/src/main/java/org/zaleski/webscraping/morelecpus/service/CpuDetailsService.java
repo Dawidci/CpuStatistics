@@ -33,6 +33,11 @@ public class CpuDetailsService {
         return cpuDetailsRepository.findByDate(date);
     }
 
+    public LocalDate getMaxDate() {
+        List<CpuDetails> details = this.getAllCpuDetails();
+        return details.stream().map(CpuDetails::getDate).max(LocalDate::compareTo).get();
+    }
+
     public CpuDetails createCpuDetails(CpuDetails cpuDetails) {
         cpuDetails.setDate(LocalDate.now().plusDays(1));
         return cpuDetailsRepository.save(cpuDetails);
