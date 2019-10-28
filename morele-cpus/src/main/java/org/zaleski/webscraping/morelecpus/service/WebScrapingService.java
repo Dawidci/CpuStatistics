@@ -15,15 +15,22 @@ import org.zaleski.webscraping.morelecpus.exception.ResourceNotFoundException;
 import org.zaleski.webscraping.morelecpus.model.Cpu;
 import org.zaleski.webscraping.morelecpus.model.CpuDetails;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,9 +40,10 @@ public class WebScrapingService {
     @Autowired private CpuService cpuService;
     @Autowired private CpuDetailsService cpuDetailsService;
 
-    public String webScraping() throws ResourceNotFoundException, IOException {
-        getAllCPUdata();
-        return "NOT";
+    public void webScraping() throws IOException {
+        List<CpuDetails> details = cpuDetailsService.getAllCpuDetails();
+        LocalDate maxDate = details.stream().map(CpuDetails::getDate).max(LocalDate::compareTo).get();
+        if(!maxDate.equals(LocalDate.now())) getAllCPUdata();
     }
 
     private void getAllCPUdata() throws IOException {
@@ -60,20 +68,7 @@ public class WebScrapingService {
         getCPUpriceAndCoreCount(newCpu, newCpuDetails, processor);
         newCpuDetails.setDate(LocalDate.now());
 
-
         ResponseEntity<Cpu> findCpu = cpuService.getCpuByName(newCpu.getName());
-        /*
-        SessionFactory sessionFactory =  new Configuration().configure().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-
-        CriteriaBuilder cb1 = EntityManager.getCriteriaBuilder();
-        CriteriaQuery<CpuDetails> criteriaQuery = session.getCriteriaBuilder().createQuery(CpuDetails.class);*/
-        //criteriaQuery.from(CpuDetails.class);
-
-        //criteriaQuery.select(cb1.max(root.<Number>get("relationId")));
-        //criteriaQuery.select(session)
-        //List<Contact> contacts = session.createQuery(criteriaQuery).getResultList();
-        //session.close();
 
         if(findCpu.getBody() == null) {
             cpuService.createCpu(newCpu);

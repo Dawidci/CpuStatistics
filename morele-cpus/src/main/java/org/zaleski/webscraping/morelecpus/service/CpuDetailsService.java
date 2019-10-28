@@ -34,6 +34,7 @@ public class CpuDetailsService {
     }
 
     public CpuDetails createCpuDetails(CpuDetails cpuDetails) {
+        cpuDetails.setDate(LocalDate.now().plusDays(1));
         return cpuDetailsRepository.save(cpuDetails);
     }
 }

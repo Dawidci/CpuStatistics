@@ -18,7 +18,7 @@ public class WebScrapingController {
     @Autowired private WebScrapingService webScrapingService;
 
     @GetMapping("")
-    public String webScraping() throws ResourceNotFoundException, IOException {
-        return this.webScrapingService.webScraping();
+    public void webScraping() throws ResourceNotFoundException, IOException {
+        this.webScrapingService.webScraping();
     }
 }
