@@ -25,9 +25,8 @@ public class WebScrapingService {
     @Autowired private CpuDetailsService cpuDetailsService;
 
     public void webScraping() throws IOException {
-        //LocalDate maxDate = this.cpuDetailsService.getMaxDate();
-        //if(!maxDate.equals(LocalDate.now()))
-        getAllCPUdata();
+        LocalDate maxDate = this.cpuDetailsService.getMaxDate();
+        if(!maxDate.equals(LocalDate.now())) getAllCPUdata();
     }
 
     private void getAllCPUdata() throws IOException {
@@ -61,7 +60,7 @@ public class WebScrapingService {
             findCpu = cpuService.getCpuByName(newCpu.getName());
         }
 
-        newCpuDetails.setIdCpu(findCpu.getBody().getId());
+        newCpuDetails.setCpu(findCpu.getBody());
         cpuDetailsService.createCpuDetails(newCpuDetails);
     }
 

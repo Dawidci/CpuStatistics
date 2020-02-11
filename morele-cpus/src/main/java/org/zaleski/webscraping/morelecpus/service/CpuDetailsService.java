@@ -4,18 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.zaleski.webscraping.morelecpus.exception.ResourceNotFoundException;
+import org.zaleski.webscraping.morelecpus.model.Cpu;
 import org.zaleski.webscraping.morelecpus.model.CpuDetails;
 import org.zaleski.webscraping.morelecpus.repository.CpuDetailsRepository;
+import org.zaleski.webscraping.morelecpus.repository.CpuRepository;
 
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class CpuDetailsService {
 
     @Autowired private CpuDetailsRepository cpuDetailsRepository;
+    @Autowired private CpuRepository cpuRepository;
 
     public List<CpuDetails> getAllCpuDetails() {
 
@@ -31,7 +35,8 @@ public class CpuDetailsService {
 
     public List<CpuDetails> getCpuDetailsByIdCpu(Long idCpu) {
 
-        return cpuDetailsRepository.findByIdCpu(idCpu);
+        Optional<Cpu> cpu = cpuRepository.findById(idCpu);
+        return cpuDetailsRepository.findByCpu(cpu);
     }
 
     public List<CpuDetails> getCpuDetailsByDate(LocalDate date) {

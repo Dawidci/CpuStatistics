@@ -1,12 +1,14 @@
 package org.zaleski.webscraping.morelecpus.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "cpus")
 public class Cpu {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "companyName", nullable = false)
@@ -17,6 +19,9 @@ public class Cpu {
     private int cache;
     @Column(name = "clockSpeed", nullable = false)
     private float clockSpeed;
+
+    @OneToMany(mappedBy = "cpu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<CpuDetails> cpuDetails;
 
     public Cpu() {
     }

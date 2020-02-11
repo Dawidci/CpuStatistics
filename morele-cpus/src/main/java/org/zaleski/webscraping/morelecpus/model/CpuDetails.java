@@ -8,8 +8,7 @@ import java.time.LocalDate;
 public class CpuDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "id_cpu", nullable = false)
-    private long idCpu;
+
     @Column(name = "price", nullable = false)
     private int price;
     @Column(name = "sales", nullable = false)
@@ -17,15 +16,19 @@ public class CpuDetails {
     @Column(name = "update_date", nullable = false)
     private LocalDate date;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "id_cpu", nullable = false)
+    private Cpu cpu;
+
     public CpuDetails() {
     }
 
-    public CpuDetails(long id, long idCpu, int price, int sales, LocalDate date) {
+    public CpuDetails(long id, int price, int sales, LocalDate date, Cpu cpu) {
         this.id = id;
-        this.idCpu = idCpu;
         this.price = price;
         this.sales = sales;
         this.date = date;
+        this.cpu = cpu;
     }
 
     public long getId() {
@@ -34,14 +37,6 @@ public class CpuDetails {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getIdCpu() {
-        return idCpu;
-    }
-
-    public void setIdCpu(long idCpu) {
-        this.idCpu = idCpu;
     }
 
     public int getPrice() {
@@ -66,5 +61,13 @@ public class CpuDetails {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Cpu getCpu() {
+        return cpu;
+    }
+
+    public void setCpu(Cpu cpu) {
+        this.cpu = cpu;
     }
 }
