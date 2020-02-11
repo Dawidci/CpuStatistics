@@ -10,6 +10,7 @@ import org.zaleski.webscraping.morelecpus.exception.ResourceNotFoundException;
 import org.zaleski.webscraping.morelecpus.model.Cpu;
 import org.zaleski.webscraping.morelecpus.model.CpuDetails;
 
+import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,11 +25,13 @@ public class WebScrapingService {
     @Autowired private CpuDetailsService cpuDetailsService;
 
     public void webScraping() throws IOException {
-        LocalDate maxDate = this.cpuDetailsService.getMaxDate();
-        if(!maxDate.equals(LocalDate.now())) getAllCPUdata();
+        //LocalDate maxDate = this.cpuDetailsService.getMaxDate();
+        //if(!maxDate.equals(LocalDate.now()))
+        getAllCPUdata();
     }
 
     private void getAllCPUdata() throws IOException {
+
         String moreleUrl = "https://www.morele.net/komputery/podzespoly-komputerowe/procesory-45/,,,,,,,sd,1,,,,/1/";
         Document doc = Jsoup.connect(moreleUrl).get();
         Elements processors = doc.select("div.category-list div.cat-list-products div.cat-product-content");
@@ -42,6 +45,7 @@ public class WebScrapingService {
     }
 
     private void addNewCpuAndCpuDetails(Element processor) throws ResourceNotFoundException, NullPointerException {
+
         Cpu newCpu = new Cpu();
         CpuDetails newCpuDetails = new CpuDetails();
 
@@ -62,6 +66,7 @@ public class WebScrapingService {
     }
 
     private void getMainCPUdata(Cpu newCPU, Element processor) {
+
         String fullProductName = processor.select("h2.cat-product-name").text();
         ArrayList<String> names = new ArrayList<>(Arrays.asList(fullProductName.split(", ")));
         Matcher matcher = getMatcherByRegex("^([\\w]*)", names.get(0).replace("Procesor ", ""));
@@ -70,17 +75,19 @@ public class WebScrapingService {
             newCPU.setCompanyName(matcher.group());
             newCPU.setName(matcher.replaceFirst("").trim());
             newCPU.setClockSpeed(Float.parseFloat(names.get(1).replace("GHz", "")));
-            newCPU.setCache(Integer.parseInt(names.get(2).replace("MB", "")));
+            newCPU.setCache(Integer.parseInt(names.get(2).replace(" ", "").replace("MB", "")));
         }
     }
 
     private void getCPUsales(CpuDetails newCpuDetails, Element processor) {
+
         String sales = processor.select("div.cat-product-stat div.cat-product-sold").text();
         Matcher matcher = getMatcherByRegex("[\\d]+", sales);
         if(matcher.find()) newCpuDetails.setSales(Integer.parseInt(matcher.group()));
     }
 
     private void getCPUpriceAndCoreCount(Cpu newCPU, CpuDetails newCpuDetails, Element processor) {
+
         Elements features = processor.select("div.cat-product-features div.cat-product-feature");
         String price = processor.select("div.cat-product-right div.cat-product-price div.price-new").text()
                 .replace(" ", "");
@@ -94,6 +101,7 @@ public class WebScrapingService {
     }
 
     private Matcher getMatcherByRegex(String regex, String text) {
+
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(text);
     }

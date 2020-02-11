@@ -1,15 +1,9 @@
 package org.zaleski.webscraping.morelecpus.model;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity @Table(name = "cpus")
+@Entity
+@Table(name = "cpus")
 public class Cpu {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -23,4 +17,64 @@ public class Cpu {
     private int cache;
     @Column(name = "clockSpeed", nullable = false)
     private float clockSpeed;
+
+    public Cpu() {
+    }
+
+    public Cpu(long id, String name, String companyName, int coreCount, int cache, float clockSpeed) {
+        this.id = id;
+        this.name = name;
+        this.companyName = companyName;
+        this.coreCount = coreCount;
+        this.cache = cache;
+        this.clockSpeed = clockSpeed;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public int getCoreCount() {
+        return coreCount;
+    }
+
+    public void setCoreCount(int coreCount) {
+        this.coreCount = coreCount;
+    }
+
+    public int getCache() {
+        return cache;
+    }
+
+    public void setCache(int cache) {
+        this.cache = cache;
+    }
+
+    public float getClockSpeed() {
+        return clockSpeed;
+    }
+
+    public void setClockSpeed(float clockSpeed) {
+        this.clockSpeed = clockSpeed;
+    }
 }
