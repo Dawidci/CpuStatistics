@@ -1,0 +1,38 @@
+<div class="table table-striped">
+
+  <div class="table-heading">
+    <h2>Cpu - List</h2>
+  </div>
+
+  <div class="table-body">
+    <table class="table table-striped">
+
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Cores</th>
+        <th>Cache</th>
+        <th>Clock</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let cpu of cpus">
+        <td>{{cpu.id}}</td>
+        <td>{{cpu.name}}</td>
+        <td>{{cpu.companyName}}</td>
+        <td>{{cpu.coreCount}}</td>
+        <td>{{cpu.cache}} MB</td>
+        <td>{{cpu.clockSpeed}} Ghz</td>
+        <td>
+          <button (click)="showCpuDetails(cpu.id)" class="btn btn-info" style="margin-left: 5px">Details</button>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+  </div>
+</div>

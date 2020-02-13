@@ -1,0 +1,44 @@
+<div *ngIf="cpu">
+  <div>
+    <div><h2>{{cpu.name}}</h2></div>
+    <div><label><b>Company: </b></label> {{cpu.companyName}}</div>
+    <div><label><b>Cores: </b></label> {{cpu.coreCount}}</div>
+    <div><label><b>Cache: </b></label> {{cpu.cache}} MB</div>
+    <div><label><b>Clock: </b></label> {{cpu.clockSpeed}}</div>
+  </div>
+  <br>
+
+  <div class="table">
+
+    <div class="table-heading">
+      <h2>Details</h2>
+    </div>
+
+    <div class="table-body">
+      <table class="table table-striped">
+
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Price</th>
+          <th>Sales</th>
+          <th>Update Date</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let detail of cpuDetails">
+          <td>{{detail.id}}</td>
+          <td>{{detail.price}}</td>
+          <td>{{detail.sales}}</td>
+          <td>{{detail.date}}</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+  <button (click)="goToCpuList()" class="btn btn-primary">Back to Cpu List</button>
+  <br>
+</div>
