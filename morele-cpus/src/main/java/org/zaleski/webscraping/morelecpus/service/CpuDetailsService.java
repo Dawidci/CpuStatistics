@@ -1,5 +1,6 @@
 package org.zaleski.webscraping.morelecpus.service;
 
+import org.hibernate.criterion.Distinct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CpuDetailsService {
@@ -41,13 +43,19 @@ public class CpuDetailsService {
 
     public List<CpuDetails> getCpuDetailsByDate(LocalDate date) {
 
-        return cpuDetailsRepository.findByDate(date);
+        return cpuDetailsRepository.findByDate(date.plusDays(1));
     }
 
     public LocalDate getMaxDate() {
 
         List<CpuDetails> details = this.getAllCpuDetails();
         return details.stream().map(CpuDetails::getDate).max(LocalDate::compareTo).get();
+    }
+
+    public List<LocalDate> getAllDates() {
+
+        List<CpuDetails> details = this.getAllCpuDetails();
+        return details.stream().map(CpuDetails::getDate).distinct().collect(Collectors.toList());
     }
 
     public CpuDetails createCpuDetails(CpuDetails cpuDetails) {

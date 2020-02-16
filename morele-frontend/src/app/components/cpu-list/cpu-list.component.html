@@ -1,3 +1,20 @@
+<div>
+  <div style="text-align: center;">
+    <h2>Cpu Sales - last 90 days</h2>
+  </div>
+
+  <div style="display: block">
+    <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [chartType]="barChartType">
+    </canvas>
+  </div>
+</div>
+
+
 <div class="table table-striped">
 
   <div class="table-heading">

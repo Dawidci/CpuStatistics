@@ -1,0 +1,16 @@
+<div>
+  <div style="text-align: center;">
+    <h2>Cpu Sales - last 90 days</h2>
+  </div>
+
+  <div style="display: block">
+    <canvas baseChart
+            [datasets]="salesChartData"
+            [labels]="salesChartLabels"
+            [options]="salesChartOptions"
+            [legend]="salesChartLegend"
+            [chartType]="salesChartType">
+    </canvas>
+  </div>
+</div>
+

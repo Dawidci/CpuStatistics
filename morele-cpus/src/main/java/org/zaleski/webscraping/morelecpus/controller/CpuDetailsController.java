@@ -33,8 +33,14 @@ public class CpuDetailsController {
     }
 
     @GetMapping("/date/{date}")
-    public List<CpuDetails> getCpuDetailsByDate(@PathVariable(value = "date") LocalDate date) {
-        return cpuDetailsService.getCpuDetailsByDate(date);
+    public List<CpuDetails> getCpuDetailsByDate(@PathVariable(value = "date") String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return cpuDetailsService.getCpuDetailsByDate(localDate);
+    }
+
+    @GetMapping("date/all")
+    public List<LocalDate> getAllDates() {
+        return cpuDetailsService.getAllDates();
     }
 
     @GetMapping("date/max")
