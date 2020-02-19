@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CpuListComponent } from './components/cpu-list/cpu-list.component';
 import { CpuDetailsComponent } from './components/cpu-details/cpu-details.component';
-import { CompanyDetailsComponent } from './company-details/company-details.component';
+import { CompanyDetailsComponent } from './components/company-details/company-details.component';
 
 @NgModule({
   declarations: [

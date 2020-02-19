@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Cpu } from "../../models/cpu";
 import { CpuService } from "../../services/cpu.service";
 import { Router, ActivatedRoute } from '@angular/router';
-import {CpuDetails} from "../../models/cpu-details";
-import {CpuDetailsService} from "../../services/cpu-details.service";
+import { CpuDetailsService } from "../../services/cpu-details.service";
+import { GenerateChartsService } from "../../services/generate-charts.service";
 
 @Component({
   selector: 'app-cpu-list',
@@ -12,43 +11,21 @@ import {CpuDetailsService} from "../../services/cpu-details.service";
 })
 export class CpuListComponent implements OnInit {
 
-  cpus: Cpu[] = [];
-  cpuLatestDetails: CpuDetails[] = [];
-  barChartType = 'bar';
-  barChartLegend = false;
-  barChartLabels: String[] = [];
-  barChartOptions = {
-    scaleShowVerticalLines: true,
-    responsive: true,
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  };
-
-  chartData: number[] = [];
-  barsColor: string[] = [];
-  barChartData = [
-    {data: this.chartData, label: 'Sales', backgroundColor: this.barsColor}
-  ];
-  intelColor: string = 'rgba(56, 151, 234, 0.7)';
-  amdColor: string = 'rgba(234, 56, 56, 0.7)';
+  cpus: Object = [];
 
   constructor(private cpuService: CpuService,
               private cpuDetailsService: CpuDetailsService,
+              private generateChartsService: GenerateChartsService,
               private router: Router) {}
 
   ngOnInit(): void {
     this.loadCpus();
+    this.generateChartsService.initializeChart("bar");
     this.loadLatestStatistics();
   }
 
   loadCpus() {
     this.cpuService.getCpuList().subscribe(cpus => {
-      // @ts-ignore
       this.cpus = cpus;
     }, error => console.log(error));
   }
@@ -56,18 +33,9 @@ export class CpuListComponent implements OnInit {
   loadLatestStatistics() {
     this.cpuDetailsService.getLatestDate().subscribe(date => {
       this.cpuDetailsService.getCpuDetailsByDate(date).subscribe(cpuDetails => {
-        this.cpuLatestDetails = cpuDetails;
-        this.cpuLatestDetails.forEach(cpuDetails => {
-          this.barChartLabels.push(cpuDetails.cpu.name);
-          this.chartData.push(cpuDetails.sales);
-          if(cpuDetails.cpu.companyName === "AMD") {
-            this.barsColor.push(this.amdColor);
-          } else if (cpuDetails.cpu.companyName === "Intel") {
-            this.barsColor.push(this.intelColor);
-          }
-        })
-      })
-    });
+        this.generateChartsService.loadChartData(cpuDetails);
+      }, error => console.log(error));
+    }, error => console.log(error));
   }
 
   showCpuDetails(id: number) {

@@ -3,17 +3,18 @@
     <h2>Cpu Sales - last 90 days</h2>
   </div>
 
+  <br>
+
   <div style="display: block">
     <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType">
+            [datasets]="generateChartsService.barChartData"
+            [labels]="generateChartsService.barChartLabels"
+            [options]="generateChartsService.chartOptions"
+            [legend]="generateChartsService.chartLegend"
+            [chartType]="generateChartsService.chartType">
     </canvas>
   </div>
 </div>
-
 
 <div class="table table-striped">
 
