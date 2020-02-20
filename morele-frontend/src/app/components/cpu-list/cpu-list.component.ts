@@ -15,7 +15,7 @@ export class CpuListComponent implements OnInit {
 
   constructor(private cpuService: CpuService,
               private cpuDetailsService: CpuDetailsService,
-              private generateChartsService: GenerateChartsService,
+              public generateChartsService: GenerateChartsService,
               private router: Router) {}
 
   ngOnInit(): void {

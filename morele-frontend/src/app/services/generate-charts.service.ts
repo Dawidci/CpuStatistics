@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CpuDetails } from "../models/cpu-details";
+import {CpuDetailsService} from "./cpu-details.service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,9 @@ export class GenerateChartsService {
   barsColor: string[] = [];
   barChartLabels: String[] = [];
   chartData: number[] = [];
+  salesChartData = [];
   chartType: string;
-  barChartLegend: boolean;
+  chartLegend: boolean;
   barChartData: any;
 
   amdData: number[] = [];
@@ -29,21 +31,23 @@ export class GenerateChartsService {
   intelColor: string = 'rgba(56, 151, 234, 0.7)';
   amdColor: string = 'rgba(234, 56, 56, 0.7)';
 
-  salesChartData = [
-    {data: this.amdData, label: 'AMD Sales', backgroundColor: this.amdColor, fill: false},
-    {data: this.intelData, label: 'Intel Sales', backgroundColor: this.intelColor, fill: false}
-  ];
-
-  constructor() { }
+  constructor(private cpuDetailsService: CpuDetailsService) { }
 
   initializeChart(chartType) {
     this.barChartLabels = [];
     this.chartData = [];
+    this.amdData = [];
+    this.intelData = [];
 
     this.chartType = chartType;
-    this.barChartLegend = false;
+    this.chartLegend = false;
     this.barChartData = [
       {data: this.chartData, label: 'Sales', backgroundColor: this.barsColor}
+    ];
+
+    this.salesChartData = [
+      {data: this.amdData, label: 'AMD Sales', backgroundColor: this.amdColor, fill: false},
+      {data: this.intelData, label: 'Intel Sales', backgroundColor: this.intelColor, fill: false}
     ];
   }
 
@@ -63,10 +67,10 @@ export class GenerateChartsService {
     }
   }
 
-  loadCompaniesCpuDetails(details: Array<CpuDetails>) {
-    this.amdData.push(details.filter(details => details.cpu.companyName == "AMD")
-      .map(details => details.sales).reduce((prev, curr) => prev + curr, 0));
-    this.intelData.push(details.filter(details => details.cpu.companyName == "Intel")
-      .map(details => details.sales).reduce((prev, curr) => prev + curr, 0));
+  loadCompaniesCpuDetails(details: Array<CpuDetails>, index: number) {
+    this.amdData[index] = details.filter(details => details.cpu.companyName == "AMD")
+      .map(details => details.sales).reduce((prev, curr) => prev + curr, 0);
+    this.intelData[index] = details.filter(details => details.cpu.companyName == "Intel")
+      .map(details => details.sales).reduce((prev, curr) => prev + curr, 0);
   }
 }

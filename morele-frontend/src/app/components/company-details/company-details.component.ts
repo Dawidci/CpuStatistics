@@ -16,24 +16,28 @@ export class CompanyDetailsComponent implements OnInit {
   salesChartLabels: string[] = [];
 
   constructor(private cpuService: CpuService,
-              private generateChartsService: GenerateChartsService,
+              public generateChartsService: GenerateChartsService,
               private cpuDetailsService: CpuDetailsService) { }
 
   ngOnInit() {
     this.generateChartsService.initializeChart("line");
-    this.loadData();
+    this.loadAllDates();
   }
 
-  loadData() {
+  loadAllDates() {
     this.cpuDetailsService.getAllDates().subscribe(dates => {
-      this.salesChartLabels = dates.toString().split(",");
-      this.salesChartLabels.forEach(date => this.loadCpuDetailsByDate(date));
+      for(let index = 0; index < dates.length; index++) {
+        let date = dates[index];
+        this.salesChartLabels.push(date);
+        this.loadCpuDetailsByDate(date, index);
+      }
     }, error => console.log(error));
   }
 
-  loadCpuDetailsByDate(date: string) {
+  loadCpuDetailsByDate(date: string, index: number) {
     this.cpuDetailsService.getCpuDetailsByDate(date).subscribe(details => {
-      this.generateChartsService.loadCompaniesCpuDetails(details);
+      details.forEach(detail => console.log(detail.date));
+      this.generateChartsService.loadCompaniesCpuDetails(details, index);
     }, error => console.log(error));
   }
 }

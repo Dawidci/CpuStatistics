@@ -28,7 +28,7 @@ export class CpuDetailsService {
     return this.http.get(`${this.baseUrl}/date/max`);
   }
 
-  getAllDates(): Observable<Object> {
+  getAllDates(): Observable<any> {
     return this.http.get(`${this.baseUrl}/date/all`);
   }
 }
